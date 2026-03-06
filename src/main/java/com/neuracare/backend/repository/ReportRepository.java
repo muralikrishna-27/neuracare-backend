@@ -8,6 +8,12 @@ import java.util.UUID;
 
 public interface ReportRepository extends JpaRepository<ReportMetadata, UUID> {
 
+    // Get all reports for a user
     List<ReportMetadata> findByUserId(UUID userId);
 
+    // Useful later for OCR / processing queue
+    List<ReportMetadata> findByStatus(String status);
+
+    // Get user reports sorted by newest first
+    List<ReportMetadata> findByUserIdOrderByUploadTimeDesc(UUID userId);
 }

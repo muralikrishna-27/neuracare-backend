@@ -12,8 +12,14 @@ public class ReportResponse {
 
     private UUID reportId;
     private UUID userId;
+
     private String fileName;
+
+    // location of stored file
+    private String filePath;
+
     private String status;
+
     private LocalDateTime uploadTime;
 
 }

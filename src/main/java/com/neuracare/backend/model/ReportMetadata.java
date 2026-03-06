@@ -2,6 +2,7 @@ package com.neuracare.backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ReportMetadata {
 
     @Id
@@ -22,6 +24,13 @@ public class ReportMetadata {
 
     @Column(name = "file_name")
     private String fileName;
+
+    // NEW FIELD (important for OCR)
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Column(name = "extracted_text", columnDefinition = "TEXT")
+    private String extractedText;
 
     @Column(name = "upload_time")
     private LocalDateTime uploadTime;

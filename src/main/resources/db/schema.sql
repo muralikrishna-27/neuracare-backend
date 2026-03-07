@@ -4,6 +4,8 @@ CREATE TABLE reports (
     file_name TEXT NOT NULL,
     file_path TEXT NOT NULL,
     extracted_text TEXT,
+    risk_level TEXT,
+    observations JSONB,
     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status TEXT NOT NULL
 );

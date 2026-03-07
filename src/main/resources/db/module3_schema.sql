@@ -1,5 +1,0 @@
---CREATE TABLE report_text (
---    report_id UUID PRIMARY KEY,
---    extracted_text TEXT,
---    processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
---);

@@ -1,8 +1,11 @@
 package com.neuracare.backend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.neuracare.backend.dto.RuleEngineResponse;
 import com.neuracare.backend.model.ReportMetadata;
 import com.neuracare.backend.ocr.OCRService;
 import com.neuracare.backend.repository.ReportRepository;
+import com.neuracare.backend.service.MedicalRuleEngineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +18,38 @@ public class OCRProcessingService {
 
     private final ReportRepository reportRepository;
     private final OCRService ocrService;
+    private final MedicalRuleEngineService medicalRuleEngineService;
+    private final ObjectMapper objectMapper;   // ✅ ADD THIS
 
     public void processReport(UUID reportId) {
 
-        ReportMetadata report = reportRepository.findById(reportId)
-                .orElseThrow();
+        try {
 
-        File file = new File(report.getFilePath());
+            ReportMetadata report = reportRepository.findById(reportId)
+                    .orElseThrow();
 
-        String extractedText = ocrService.extractText(file);
+            File file = new File(report.getFilePath());
 
-        report.setExtractedText(extractedText);
+            String extractedText = ocrService.extractText(file);
 
-        report.setStatus("OCR_COMPLETED");
+            RuleEngineResponse ruleResult =
+                    medicalRuleEngineService.analyze(extractedText);
 
-        reportRepository.save(report);
+            report.setExtractedText(extractedText);
+            report.setRiskLevel(ruleResult.getOverallRisk());
+            report.setStatus("OCR_COMPLETED");
 
+            // store observations JSON
+            report.setObservations(
+                    objectMapper.writeValueAsString(ruleResult.getObservations())
+            );
+
+            reportRepository.save(report);
+
+        } catch (Exception e) {
+
+            throw new RuntimeException("OCR processing failed", e);
+
+        }
     }
-
 }

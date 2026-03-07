@@ -32,6 +32,13 @@ public class ReportMetadata {
     @Column(name = "extracted_text", columnDefinition = "TEXT")
     private String extractedText;
 
+    @Column(name = "risk_level")
+    private String riskLevel;
+
+    @Column(name = "observations", columnDefinition = "jsonb")
+    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
+    private String observations;
+
     @Column(name = "upload_time")
     private LocalDateTime uploadTime;
 

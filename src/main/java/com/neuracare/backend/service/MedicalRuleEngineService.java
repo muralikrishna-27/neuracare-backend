@@ -1,4 +1,9 @@
-//package com.neuracare.backend.service;
-//
-//public class MedicalRuleEngineService {
-//}
+package com.neuracare.backend.service;
+
+import com.neuracare.backend.dto.RuleEngineResponse;
+
+public interface MedicalRuleEngineService {
+
+    RuleEngineResponse analyze(String extractedText);
+
+}

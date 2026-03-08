@@ -6,6 +6,7 @@ CREATE TABLE reports (
     extracted_text TEXT,
     risk_level TEXT,
     observations JSONB,
+    ai_explanation TEXT,
     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status TEXT NOT NULL
 );

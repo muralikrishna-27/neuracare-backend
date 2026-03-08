@@ -19,8 +19,8 @@ public class OCRProcessingService {
     private final ReportRepository reportRepository;
     private final OCRService ocrService;
     private final MedicalRuleEngineService medicalRuleEngineService;
-    private final ObjectMapper objectMapper;   // ✅ ADD THIS
-
+    private final ObjectMapper objectMapper;
+    private final AIExplanationService aiExplanationService;
     public void processReport(UUID reportId) {
 
         try {
@@ -34,7 +34,18 @@ public class OCRProcessingService {
 
             RuleEngineResponse ruleResult =
                     medicalRuleEngineService.analyze(extractedText);
+            String observationsJson =
+                    objectMapper.writeValueAsString(ruleResult.getObservations());
 
+            String explanation =
+                    aiExplanationService.generateExplanation(
+                            observationsJson,
+                            ruleResult.getOverallRisk()
+                    );
+            String disclaimer = "\n\nNote: This explanation only describes the values in the report. "
+                    + "For proper medical guidance, please consult a qualified healthcare professional.";
+            report.setObservations(observationsJson);
+            report.setAiExplanation(explanation + disclaimer);
             report.setExtractedText(extractedText);
             report.setRiskLevel(ruleResult.getOverallRisk());
             report.setStatus("OCR_COMPLETED");

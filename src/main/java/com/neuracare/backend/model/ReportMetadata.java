@@ -39,6 +39,9 @@ public class ReportMetadata {
     @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
     private String observations;
 
+    @Column(name = "ai_explanation", columnDefinition = "TEXT")
+    private String aiExplanation;
+
     @Column(name = "upload_time")
     private LocalDateTime uploadTime;
 

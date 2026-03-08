@@ -1,6 +1,8 @@
 package com.neuracare.backend.controller;
 
+import com.neuracare.backend.dto.FinalReportResponse;
 import com.neuracare.backend.dto.ReportResponse;
+import com.neuracare.backend.service.FinalReportService;
 import com.neuracare.backend.service.OCRProcessingService;
 import com.neuracare.backend.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class ReportController {
 
     private final OCRProcessingService ocrProcessingService;
     private final ReportService reportService;
-
+    private final FinalReportService finalReportService;
     // Upload report file
     @PostMapping("/upload")
     public ResponseEntity<ReportResponse> uploadReport(
@@ -46,5 +48,12 @@ public class ReportController {
         ocrProcessingService.processReport(reportId);
 
         return "OCR completed";
+    }
+
+    @GetMapping("/{reportId}/analysis")
+    public FinalReportResponse getFinalAnalysis(@PathVariable UUID reportId) {
+
+        return finalReportService.getFinalReport(reportId);
+
     }
 }

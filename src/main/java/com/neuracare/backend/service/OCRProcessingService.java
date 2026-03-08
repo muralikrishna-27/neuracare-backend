@@ -21,6 +21,7 @@ public class OCRProcessingService {
     private final MedicalRuleEngineService medicalRuleEngineService;
     private final ObjectMapper objectMapper;
     private final AIExplanationService aiExplanationService;
+    private final SafetyFilterService safetyFilterService;
     public void processReport(UUID reportId) {
 
         try {
@@ -42,10 +43,11 @@ public class OCRProcessingService {
                             observationsJson,
                             ruleResult.getOverallRisk()
                     );
+            explanation = safetyFilterService.filter(explanation);
             String disclaimer = "\n\nNote: This explanation only describes the values in the report. "
                     + "For proper medical guidance, please consult a qualified healthcare professional.";
             report.setObservations(observationsJson);
-            report.setAiExplanation(explanation + disclaimer);
+            report.setAiExplanation(explanation);
             report.setExtractedText(extractedText);
             report.setRiskLevel(ruleResult.getOverallRisk());
             report.setStatus("OCR_COMPLETED");

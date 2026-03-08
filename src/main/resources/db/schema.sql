@@ -10,3 +10,11 @@ CREATE TABLE reports (
     upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status TEXT NOT NULL
 );
+
+CREATE TABLE report_chat_messages (
+    message_id UUID PRIMARY KEY,
+    report_id UUID NOT NULL,
+    role TEXT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

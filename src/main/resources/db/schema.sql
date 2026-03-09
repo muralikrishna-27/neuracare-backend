@@ -25,6 +25,7 @@ CREATE TABLE voice_tasks (
     user_id BIGINT NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     task_type VARCHAR(20) NOT NULL,
+    task_message TEXT NOT NULL,
     scheduled_time TIMESTAMP NOT NULL,
     retry_count INT DEFAULT 0,
     max_retries INT DEFAULT 3,

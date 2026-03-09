@@ -18,3 +18,25 @@ CREATE TABLE report_chat_messages (
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+--voice call schemas
+CREATE TABLE voice_tasks (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    task_type VARCHAR(20) NOT NULL,
+    scheduled_time TIMESTAMP NOT NULL,
+    retry_count INT DEFAULT 0,
+    max_retries INT DEFAULT 3,
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE voice_call_logs (
+    id BIGSERIAL PRIMARY KEY,
+    task_id BIGINT NOT NULL,
+    call_sid VARCHAR(100),
+    call_time TIMESTAMP NOT NULL,
+    result VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
